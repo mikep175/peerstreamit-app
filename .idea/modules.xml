@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PeerStreaming.iml" filepath="$PROJECT_DIR$/PeerStreaming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/androidAsync/androidAsync.iml" filepath="$PROJECT_DIR$/androidAsync/androidAsync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/peerStreaming/peerStreaming.iml" filepath="$PROJECT_DIR$/peerStreaming/peerStreaming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/peerStreamingCore/peerStreamingCore.iml" filepath="$PROJECT_DIR$/peerStreamingCore/peerStreamingCore.iml" />
+    </modules>
+  </component>
+</project>

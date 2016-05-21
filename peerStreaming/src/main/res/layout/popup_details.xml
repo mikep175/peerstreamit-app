@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_element"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#c3c3c3"
+    android:orientation="vertical"
+    android:padding="40dp" >
+
+    <TextView
+        android:id="@+id/txtDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txtDetailFilePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/txtDetailDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <CheckBox
+        android:id="@+id/cbDetailProtected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Password Protected" />
+
+    <CheckBox
+        android:id="@+id/cbDetailPublished"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Published for Streaming" />
+
+    <TextView
+        android:id="@+id/txtConStreamsDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Concurrent Streams Allowed"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+<Button
+    android:id="@+id/btn_close_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:text="Close" />
+
+</LinearLayout>
