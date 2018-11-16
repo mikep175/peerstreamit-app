@@ -118,7 +118,7 @@ public class StreamService extends Service {
 					
 					dbHelper = new DBHelper(this.getBaseContext());
 					
-					mListenerThread = new RequestListener(dbHelper);
+					mListenerThread = new RequestListener(dbHelper, this.getBaseContext());
 					
 					new Thread(mListenerThread).start();
 				

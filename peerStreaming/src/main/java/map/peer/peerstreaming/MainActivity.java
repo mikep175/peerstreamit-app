@@ -54,6 +54,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import map.peer.core.DBHelper;
 import map.peer.core.NetworkUtil;
+import map.peer.core.PeerCrawlerController;
 import map.peer.core.StreamService;
 import map.peer.peerstreaming.R.drawable;
 import map.peer.peerstreaming.util.SharedAdapter;
@@ -270,33 +271,46 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	public static int MEDIA_VIDEO = 1;
 	public static int MEDIA_IMAGE = 2;
 	public static int MEDIA_AUDIO = 3;
+	public static int MEDIA_WEB = 4;
 
 	@Override
 	 public void onRequestPermissionsResult(int requestCode, String[] permissions,
 	         int[] grantResults) {
-	     if (requestCode == REQUEST_READ_EXTERNAL_STORAGE
-	             && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-	    	 newFrag = NewShareFragment.newInstance(picturePath, this, dbHelper, mPeerStreamService);
-	     } else if(requestCode == REQUEST_READ_EXTERNAL_STORAGE_BROWSER
-				 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-			 Intent fileExploreIntent = new Intent(
-					 FileBrowserActivity.INTENT_ACTION_SELECT_FILE,
-					 null,
-					 this,
-					 FileBrowserActivity.class
-			 );
+		if(MainActivity.MediaType == MEDIA_IMAGE) {
+			if (requestCode == REQUEST_READ_EXTERNAL_STORAGE
+					&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				newFrag = NewShareFragment.newInstance(picturePath, this, dbHelper, mPeerStreamService);
+			} else if (requestCode == REQUEST_READ_EXTERNAL_STORAGE_BROWSER
+					&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-			 fileExploreIntent.putExtra(FileBrowserActivity.filterExtension, ".mp3");
-			 //  fileExploreIntent.putExtra(
-			 //      ua.com.vassiliev.androidfilebrowser.FileBrowserActivity.startDirectoryParameter,
-			 //      "/sdcard"
-			 //  );//Here you can add optional start directory parameter, and file browser will start from that directory.
-			 startActivityForResult(
-					 fileExploreIntent,
-					 REQUEST_CODE_PICK_FILE_TO_SAVE_INTERNAL
-			 );
-		 }
+				Intent fileExploreIntent = new Intent(
+						FileBrowserActivity.INTENT_ACTION_SELECT_FILE,
+						null,
+						this,
+						FileBrowserActivity.class
+				);
+
+				fileExploreIntent.putExtra(FileBrowserActivity.filterExtension, ".mp3");
+				//  fileExploreIntent.putExtra(
+				//      ua.com.vassiliev.androidfilebrowser.FileBrowserActivity.startDirectoryParameter,
+				//      "/sdcard"
+				//  );//Here you can add optional start directory parameter, and file browser will start from that directory.
+				startActivityForResult(
+						fileExploreIntent,
+						REQUEST_CODE_PICK_FILE_TO_SAVE_INTERNAL
+				);
+			}
+		} else if (MainActivity.MediaType == MEDIA_WEB) {
+
+			try {
+				PeerCrawlerController.crawl(this.getBaseContext());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+
+		}
 	 }
 	 
 	int REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -396,12 +410,56 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 				intent.setType("video/*");
 				startActivityForResult(Intent.createChooser(intent, "Select a video"), 1);
 			}
-//			else if(position == 1) {
-//				MainActivity.MediaType = MainActivity.MEDIA_IMAGE;
-//				Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//				intent.setType("image/*");
-//				startActivityForResult(Intent.createChooser(intent, "Select a picture"), 1);
-//			}
+			else if(position == 3) {
+				MainActivity.MediaType = MainActivity.MEDIA_WEB;
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+						!= PackageManager.PERMISSION_GRANTED) {
+
+//					    // Should we show an explanation?
+//					    if (ContextCompat.shouldShowRequestPermissionRationale(
+//					            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//					        // Explain to the user why we need to read the contacts
+//					    }
+
+					ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+							REQUEST_READ_EXTERNAL_STORAGE_BROWSER);
+
+					// MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+					// app-defined int constant
+
+					return;
+				}
+
+
+				try {
+					PeerCrawlerController.crawl(this.getBaseContext());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				/*Intent fileExploreIntent = new Intent(
+						FileBrowserActivity.INTENT_ACTION_SELECT_FILE,
+						null,
+						this,
+						FileBrowserActivity.class
+				);
+
+				fileExploreIntent.putExtra(FileBrowserActivity.filterExtension, ".mp3");
+				//  fileExploreIntent.putExtra(
+				//      ua.com.vassiliev.androidfilebrowser.FileBrowserActivity.startDirectoryParameter,
+				//      "/sdcard"
+				//  );//Here you can add optional start directory parameter, and file browser will start from that directory.
+				startActivityForResult(
+						fileExploreIntent,
+						REQUEST_CODE_PICK_FILE_TO_SAVE_INTERNAL
+				);*/
+			}
+			else if(position == 2) {
+				MainActivity.MediaType = MainActivity.MEDIA_IMAGE;
+				Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				intent.setType("image/*");
+				startActivityForResult(Intent.createChooser(intent, "Select a picture"), 1);
+			}
 			else if(position == 1) {
 				MainActivity.MediaType = MainActivity.MEDIA_AUDIO;
 //				Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

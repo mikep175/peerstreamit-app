@@ -1,9 +1,11 @@
 <component name="libraryTable">
   <library name="isoparser-1.1.17">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/peerStreamingCore/libs/isoparser-1.1.17.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.mp4parser/isoparser/1.1.17/d80bcd7e583d1e1b4904fa0bb0d6d21995a7ca69/isoparser-1.1.17.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.mp4parser/isoparser/1.1.17/ee6a3a070375d8df75d0f0462126c389095b2273/isoparser-1.1.17-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

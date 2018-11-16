@@ -59,6 +59,8 @@ public class MapFragmentedMp4Builder extends FragmentedMp4Builder implements IBu
 	boolean socketReady = false;
 	boolean seeking = false;
 	double seekTo = 0.0;
+
+	public boolean isHLS = false;
 	
 	public void seek() {
 		
@@ -190,8 +192,8 @@ public class MapFragmentedMp4Builder extends FragmentedMp4Builder implements IBu
 	        } else  if(socket != null && socket.isOpen() == true && initconn == true){
 	        	
 	        	initconn = false;
-	        	
-		        socket.send("PSISTREAM:" + nsi);
+
+				socket.send("PSISTREAM" + (isHLS ? "HLS" : "") + ":" + nsi+ (isHLS ? (":" + ((long)locHLS)) : ""));
 		        
 	        	try{
 
@@ -252,7 +254,10 @@ public class MapFragmentedMp4Builder extends FragmentedMp4Builder implements IBu
 
 						stream(movie);
 
-						createMoofMdat(movie, 0.0);
+						//if(isHLS == false) {
+							createMoofMdat(movie, isHLS ? locHLS : 0.0);
+						//}
+
 						movieIsStopped = false;
 
 					}else {
@@ -283,7 +288,10 @@ public class MapFragmentedMp4Builder extends FragmentedMp4Builder implements IBu
 						}
 						stream(movie);
 
-						createMoofMdat(movie, 0.0);
+						//if(isHLS == false) {
+							createMoofMdat(movie, isHLS ? locHLS : 0.0);
+						//}
+
 						movieIsStopped = false;
 					}
 						
@@ -305,11 +313,20 @@ public class MapFragmentedMp4Builder extends FragmentedMp4Builder implements IBu
 boolean reconn = false;
 boolean initconn = true;
 	String randomString = null;
+	double locHLS = 0;
 
-	public MapFragmentedMp4Builder() {
-		
+	public MapFragmentedMp4Builder(boolean isHLS, double loc) {
+
 		super();
-		
+
+		this.locHLS = loc;
+
+		this.isHLS = isHLS;
+
+		if(isHLS == true) {
+			fragmentDuration = 4;
+		}
+
 		SecureRandom random = new SecureRandom();
 
 		randomString = new BigInteger(130, random).toString(32);
@@ -345,11 +362,17 @@ boolean initconn = true;
 		Log.d(TAG, "Creating movie " + movie);
 		
 		this.setFragmenter(new MapFragmenter(fragmentDuration));
-        
-        streamBox(createFtyp(movie));
-        //isoFile.addBox(createPdin(movie));
-        streamBox(createMoov(movie));
-        
+
+		if(isHLS == false || locHLS == -1) {
+			streamBox(createFtyp(movie));
+			//isoFile.addBox(createPdin(movie));
+			streamBox(createMoov(movie));
+
+			if(isHLS == true) {
+				socket.send("PSIENDSTREAMHLS:" + nsi);
+				movieIsStopped = true;
+			}
+		}
 //        for (Box box : createMoofMdat(movie)) {
 //        	try{
 //        	streamBox(box, socket);
@@ -507,7 +530,7 @@ boolean initconn = true;
 	        	
 	        } else if(initconn == false) {
 	        	
-	        	socket.send("PSISTREAM:" + nsi);
+	        	socket.send("PSISTREAM" + (isHLS ? "HLS" : "") + ":" + nsi+ (isHLS ? (":" + ((long)locHLS)) : ""));
 	        	
 	        	sendBytes(remaining.getAllByteArray());
 	        	
@@ -651,15 +674,17 @@ boolean initconn = true;
     //PausableExecutor streamingExecutor = null;
     
     protected List<Box> createMoofMdat(final Movie movie, double position) {
-    	
+
     //    sema = new Semaphore(maxThreads);
-    //	synchronized (this) 
+    //	synchronized (this)
 		{
+
+
 	    	moofMdatStart = position;
 	    	Log.e(TAG, Thread.currentThread().getName() + " - " + position);
-	    	
+
 	    	executor = new PausableExecutor(maxThreads, cont);
-	    	
+
 	        HashMap<Track, long[]> intersectionMap = new HashMap<Track, long[]>();
 	        HashMap<Track, Double> track2currentTime = new HashMap<Track, Double>();
 
@@ -671,183 +696,194 @@ boolean initconn = true;
 	        }
 
 	        int sequence = 1;
-	        
+
 	        long[] allStartSamples = null;
 	        double totalDuration = 0;
-	        
+
             for (Map.Entry<Track, Double> trackEntry : track2currentTime.entrySet()) {
                 if (trackEntry.getValue() > totalDuration) {
                 	totalDuration = trackEntry.getValue();
                 }
             }
 	        //tracks may not span entire video
-	        
-	        while (!intersectionMap.isEmpty()) {
-		        //	synchronized (this) 
+
+			int i = 0;
+
+			if(isHLS == true && locHLS == -1) {
+
+				//init hls
+ 			} else {
+
+				while (!intersectionMap.isEmpty()) {
+					//	synchronized (this)
 					{
-			            Track earliestTrack = null;
-			            double earliestTime = Double.MAX_VALUE;
-			            for (Map.Entry<Track, Double> trackEntry : track2currentTime.entrySet()) {
-			                if (trackEntry.getValue() < earliestTime) {
-			                    earliestTime = trackEntry.getValue();
-			                    earliestTrack = trackEntry.getKey();
-			                }
-			            }
-			            assert earliestTrack != null;
+						Track earliestTrack = null;
+						double earliestTime = Double.MAX_VALUE;
+						for (Map.Entry<Track, Double> trackEntry : track2currentTime.entrySet()) {
+							if (trackEntry.getValue() < earliestTime) {
+								earliestTime = trackEntry.getValue();
+								earliestTrack = trackEntry.getKey();
+							}
+						}
+						assert earliestTrack != null;
 
-			            long[] startSamples = intersectionMap.get(earliestTrack);
-			            
-			            if(allStartSamples == null) {
-			            	
-			            	allStartSamples = startSamples;
-			            	Log.d(TAG, "allStartSamples: " + allStartSamples.length);
-			            }
-			            
-			            
-			            long startSample = startSamples[0];
-			            long endSample = startSamples.length > 1 ? startSamples[1] : earliestTrack.getSamples().size() + 1;
+						long[] startSamples = intersectionMap.get(earliestTrack);
+
+						if (allStartSamples == null) {
+
+							allStartSamples = startSamples;
+							Log.d(TAG, "allStartSamples: " + allStartSamples.length);
+						}
 
 
-			            //while(inProgress == maxThreads) { }
-			            
-			            if(earliestTime >= position) {
-			            	executor.execute(new FragmentTask(++nextStreamNum, this, earliestTrack, startSample, endSample, sequence, earliestTime));
-			            	inProgress++;
+						long startSample = startSamples[0];
+						long endSample = startSamples.length > 1 ? startSamples[1] : earliestTrack.getSamples().size() + 1;
 
-			            }
-			             //new FragmentTask(++nextStreamNum, this, earliestTrack, startSample, endSample, sequence).start();
-				         //inProgress++;
-			            
-			            //createFragment(moofsMdats, earliestTrack, startSample, endSample, sequence);
 
-			            if (startSamples.length == 1) {
-			                intersectionMap.remove(earliestTrack);
-			                track2currentTime.remove(earliestTrack);
-			                // all sample written.
-			            } else {
-			                long[] nuStartSamples = new long[startSamples.length - 1];
-			                System.arraycopy(startSamples, 1, nuStartSamples, 0, nuStartSamples.length);
-			                intersectionMap.put(earliestTrack, nuStartSamples);
-			                track2currentTime.put(earliestTrack, earliestTime);
-			            }
-		            
-			            if(movieIsStopped == true || Thread.interrupted() == true) {
-			            	
+						//while(inProgress == maxThreads) { }
+
+						if (earliestTime >= position) {
+							executor.execute(new FragmentTask(++nextStreamNum, this, earliestTrack, startSample, endSample, sequence, earliestTime));
+							inProgress++;
+
+							if (isHLS == true) {
+								break;
+							}
+						}
+						//new FragmentTask(++nextStreamNum, this, earliestTrack, startSample, endSample, sequence).start();
+						//inProgress++;
+
+						//createFragment(moofsMdats, earliestTrack, startSample, endSample, sequence);
+
+						if (startSamples.length == 1) {
+							intersectionMap.remove(earliestTrack);
+							track2currentTime.remove(earliestTrack);
+							// all sample written.
+						} else {
+							long[] nuStartSamples = new long[startSamples.length - 1];
+							System.arraycopy(startSamples, 1, nuStartSamples, 0, nuStartSamples.length);
+							intersectionMap.put(earliestTrack, nuStartSamples);
+							track2currentTime.put(earliestTrack, earliestTime);
+						}
+
+						if (movieIsStopped == true || Thread.interrupted() == true) {
+
 
 							try {
-								
+
 								executor.shutdown();//Now();
-								
-							} catch(Exception ex) {
-								
+
+							} catch (Exception ex) {
+
 								Log.e(TAG, ex.getClass().getName());
-								
-								if(ex.getMessage() != null)
-								Log.e(TAG, ex.getMessage());
+
+								if (ex.getMessage() != null)
+									Log.e(TAG, ex.getMessage());
 							}
 							//movieIsStopped = false;
-					        return null;
-			            }
-			            
-			            sequence++;
-					}
-	        	}
+							return null;
+						}
 
-	        while(movieIsStopped == false && Thread.interrupted() == false && (executor.isTerminated() == false || streamQueue.size() > 0)) {
-			    
+						sequence++;
+					}
+				}
+			}
+
+	        while((isHLS == true && movieIsStopped == false) || (movieIsStopped == false && Thread.interrupted() == false && (executor.isTerminated() == false || streamQueue.size() > 0))) {
+
 				taskComplete();
-				
-			} 
+
+			}
 
 	        executor.shutdown();//Now();
 		}
 
         //movieIsStopped = false;
-        
+
         return null;
 }
-    
-   
+
+
     Date started = null;
-    
+
     int batchComplete = 0;
-    
+
     double playerTime = 0;
-    
+
 	public  void taskComplete() {
 
 		try{
-			
 
-			synchronized(this) 
+
+			synchronized(this)
 			{
-			
+
 				if(streamQueue.containsKey(nextProcessNum) == true) {
-					
-					
+
+
 					try {
 
 							if(started == null) {
-								
+
 								started = new Date();
 							}
-						
+
 							if(Thread.interrupted() == true || this.movieIsStopped == true) {
-				            	
+
 
 								try {
-									
+
 									executor.shutdown();//Now();
-									
+
 								} catch(Exception ex) {
-									
+
 									Log.e(TAG, ex.getClass().getName());
-									
+
 									if(ex.getMessage() != null)
 									Log.e(TAG, ex.getMessage());
 								}
-								
+
 								return;
 				            }
-							
+
 							Log.d(TAG, "IsOpen: " + socket.isOpen());
-						
+
 							Object[] boxes = streamQueue.remove(nextProcessNum);
-							
+
 							Date now = new Date();
-							
+
 							//long seconds = (now.getTime()- started.getTime())/1000;
-						
+
 							double vidTime = (double)boxes[2];
 
 							long waitFor = 1;//(long)(vidTime - seconds - 30);
-							
+
 							while(vidTime > playerTime + 30) {
-								
+
 								Log.d(TAG, "throttling: " + waitFor);
-								
+
 								executor.ExecutorContinue.pause();
-								
+
 								Thread.sleep(waitFor * 1000);
-								
+
 								executor.ExecutorContinue.resume();
 							}
-							
+
 							//Log.d(TAG, "done throttling");
-							
+
 							MovieFragmentBox moof = (MovieFragmentBox) boxes[0];
-//							
+//
 //							List<TrackRunBox> hbs = moof.getTrackFragmentHeaderBoxes();
-//							
+//
 //							for(TrackRunBox hb : hbs) {
 //								 List<TrackRunBox.Entry> ents = hb.getEntries();
-//								
+//
 //								 for(TrackRunBox.Entry ent : ents) {
-//									 
+//
 //									long soFar =  ent.getSampleCompositionTimeOffset() + ent.getSampleDuration();
-//									
+//
 //									if(soFar > durationProcessed) { durationProcessed = soFar; }
-//									
+//
 //								 }
 //							}
 							if(Thread.interrupted() == true || movieIsStopped == true) return;
@@ -860,104 +896,113 @@ boolean initconn = true;
 							streamBox((Box)boxes[1]);
 							//if(Thread.interrupted() == true || movieIsStopped == true) return;
 							waitToBuffer();
+
+							if(isHLS) {
+								//streamBox(createMvex(movie));
+								socket.send("PSIENDSTREAMHLS:" + nsi);
+								movieIsStopped = true;
+								return;
+							}
+
 							if(Thread.interrupted() == true || movieIsStopped == true) return;
 							socket.send("TC:" + vidTime);
 							if(Thread.interrupted() == true || movieIsStopped == true) return;
 							nextProcessNum++;
-							
+
+
 							if(batchComplete == maxThreads) {
 								batchComplete = 0;
 								inProgress = 0;
 							}
-							
+
 					} catch (IOException ex) {
 						Log.e(TAG, ex.getClass().getName());
-						
+
 						if(ex.getMessage() != null)
 						Log.e(TAG, ex.getMessage());
-						
+
 						executor.shutdownNow();
-						
+
 					} catch (InterruptedException ex) {
 						Log.e(TAG, ex.getClass().getName());
-						
+
 						if(ex.getMessage() != null)
 						Log.e(TAG, ex.getMessage());
-						
+
 						executor.shutdownNow();
 					}
 				}
 			}
 		} catch (Exception ex) {
-			
+
 			Log.e(TAG, ex.getClass().getName());
-			
+
 			if(ex.getMessage() != null)
 			Log.e(TAG, ex.getMessage());
-			
+
 			executor.shutdownNow();
 		}
 	}
-	
+
 
 
 	private void waitToBuffer() {
 		//Log.d(TAG, "IsBuffering: " + socket.isBuffering());
-		
+
 		while(socket.isBuffering() == true) {
 			//Log.d(TAG, "IsBuffering: " + socket.isBuffering());
 //			try {
 //				//Thread.sleep(100);
 //			} catch (InterruptedException e) {
 //				Log.e(TAG, e.getClass().getName());
-//				
+//
 //				if(e.getMessage() != null)
 //				Log.e(TAG, e.getMessage());
 				//((WebSocketImpl)socket).flush();
-				
+
 				if((socket.isBuffering() == true)) { Log.e(TAG, "FLUSH DIDNT WORK"); }
 				if(Thread.interrupted() == true || movieIsStopped == true) return;
 //			}
-			
+
 		}
 	}
-	
+
 	public class FragmentTask implements Runnable {
 
 		int streamOrder; MapFragmentedMp4Builder builder; Track track; long startSample; long endSample; int sequence; double earliestTime;
-		
+
 		public FragmentTask(int streamOrder, MapFragmentedMp4Builder builder, Track track, long startSample, long endSample, int sequence, double earliestTime) {
-			
+
 			super();
-			
+
 			this.streamOrder = streamOrder;
-			
+
 			this.builder = builder;
-			
+
 			this.track = track;
-			
+
 			this.startSample = startSample;
-			
+
 			this.endSample = endSample;
-			
+
 			this.sequence = sequence;
-			
+
 			this.earliestTime = earliestTime;
 		}
-		
+
 		@Override
 		public void run() {
-			
+
 //        	try {
 //				sema.acquire();
 //			} catch (Exception ex) {
-//				
+//
 //				Log.e(TAG, ex.getClass().getName());
-//				
+//
 //				if(ex.getMessage() != null)
 //				Log.e(TAG, ex.getMessage());
 //			}
-        	
+
 			if(Thread.interrupted() == true || movieIsStopped == true) return;
 			Box moof = builder.createMoof(startSample, endSample, track, sequence);
 			if(Thread.interrupted() == true || movieIsStopped == true) return;

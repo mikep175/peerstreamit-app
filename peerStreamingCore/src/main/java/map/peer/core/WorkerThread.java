@@ -34,9 +34,9 @@ public class WorkerThread implements Runnable {
 		Thread.currentThread().interrupt();
 	}
 
-	WebSocket webSocket; String fileUrl; String nsi; DBHelper dbHelper; String contentType;
+	WebSocket webSocket; String fileUrl; String nsi; DBHelper dbHelper; String contentType; boolean isHLS; long loc;
 	
-	public WorkerThread(String fileUrl, String nsi, DBHelper dbHelper, String contentType) {
+	public WorkerThread(String fileUrl, String nsi, DBHelper dbHelper, String contentType, boolean isHLS, String loc) {
 		
 		super();
 		
@@ -44,6 +44,8 @@ public class WorkerThread implements Runnable {
 		this.nsi = nsi;
 		this.dbHelper = dbHelper;
 		this.contentType = contentType;
+		this.isHLS = isHLS;
+		this.loc = Long.parseLong(loc);
 	}
 	
 	@Override
@@ -54,14 +56,14 @@ public class WorkerThread implements Runnable {
 
 		if(contentType.equals("3")) {
 
-			MapFragmentedMp4Builder mp4 = new MapFragmentedMp4Builder();
+			MapFragmentedMp4Builder mp4 = new MapFragmentedMp4Builder(isHLS, loc);
 			mp4.isAudio = true;
-
 			mapFrag = mp4;
 		}
 		else if(contentType.equals("1")) {
-		
-			mapFrag = new MapFragmentedMp4Builder();
+
+			MapFragmentedMp4Builder mp4 = new MapFragmentedMp4Builder(isHLS, loc);
+			mapFrag = mp4;
 			
 		} else {
 			

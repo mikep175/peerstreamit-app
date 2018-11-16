@@ -109,7 +109,7 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerListView.setAdapter(
 				new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1,
 						android.R.id.text1, new String[] { getString(R.string.title_section1)
-								,"Share Audio"//, getString(R.string.title_section3),getString(R.string.title_section2),
+								,"Share Audio", "Share Image", "Share Web"//, getString(R.string.title_section3),getString(R.string.title_section2),
 								}));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		return mDrawerListView;

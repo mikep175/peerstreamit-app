@@ -3,7 +3,7 @@
     package="map.peer.core.test" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <instrumentation
@@ -14,10 +14,6 @@
         android:targetPackage="map.peer.core.test" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application>
         <uses-library android:name="android.test.runner" />

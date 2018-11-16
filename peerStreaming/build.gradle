@@ -22,6 +22,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/BCKEY.SF'
+        exclude 'META-INF/BCKEY.DSA'
+        exclude 'META-INF/maven/org.gagravarr/vorbis-java-core/pom.properties'
+        exclude 'META-INF/maven/org.gagravarr/vorbis-java-core/pom.xml'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/services/org.apache.tika.detect.Detector'
+        exclude 'META-INF/services/org.apache.tika.parser.Parser'
+    }
 }
 
 dependencies {

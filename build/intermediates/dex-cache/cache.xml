@@ -1,3 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\exploded-aar\PeerStreaming\androidAsync\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1a8eecfc90061e8ff5a9132c8d0adab1d318f836">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\PeerStreaming-androidAsync-unspecified_3842ebaeb15793d3928e860208e2c8912b49ed2e.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.tika\tika-core\1.5\194ca0fb3d73b07737524806fbc3bec89063c03a\tika-core-1.5.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="194ca0fb3d73b07737524806fbc3bec89063c03a">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\tika-core-1.5_86994f7fe0743dbe2d92da2cb437b48f9e8caba5.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.gagravarr\vorbis-java-core\0.1\c849979e199d8a7c3da1a00799c623c00f94efac\vorbis-java-core-0.1-tests.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c849979e199d8a7c3da1a00799c623c00f94efac">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\vorbis-java-core-0.1-tests_8eb8514bb9bdbe4b8332ed84ed14b82fee1ee61c.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.poi\poi\3.10-beta2\b5c83b368a241c57c60425da22e596f4ca53d998\poi-3.10-beta2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="b5c83b368a241c57c60425da22e596f4ca53d998">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\poi-3.10-beta2_6203e53cc3fdb86ff6eb8827b806f23ac437a5f0.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\jdom\jdom\1.0\a2ac1cd690ab4c80defe7f9bce14d35934c35cec\jdom-1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a2ac1cd690ab4c80defe7f9bce14d35934c35cec">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\jdom-1.0_7e2f99811942fde078e5cac3a27231e661a3b3b9.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\dom4j\dom4j\1.6.1\5d3ccc056b6f056dbf0dddfdf43894b9065a8f94\dom4j-1.6.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5d3ccc056b6f056dbf0dddfdf43894b9065a8f94">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\dom4j-1.6.1_04f5a3f80ce106644143e7dd751f08bbc8464efb.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.xmlbeans\xmlbeans\2.3.0\8704dcf5c9f10265a08f5020b0fab70eb64ac3c4\xmlbeans-2.3.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8704dcf5c9f10265a08f5020b0fab70eb64ac3c4">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\xmlbeans-2.3.0_0cfa7e29539f499216f4efc12fc73a5d5de58e5d.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.10\5b338f206827d88acd890739f400a9b7664e5984\slf4j-api-1.7.10.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5b338f206827d88acd890739f400a9b7664e5984">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\slf4j-api-1.7.10_5b524ebe5ebe632500a2cd0cf3b86ff1518e5752.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\rome\rome\0.9\dee2705dd01e79a5a96a17225f5a1ae30470bb18\rome-0.9.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dee2705dd01e79a5a96a17225f5a1ae30470bb18">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\rome-0.9_1b522ef0d08269dbc5f8badb2cbd3b03e46d42c0.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.gagravarr\vorbis-java-tika\0.1\6966c8663a7f689021accb13cceaa6101f53ea3d\vorbis-java-tika-0.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6966c8663a7f689021accb13cceaa6101f53ea3d">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\vorbis-java-tika-0.1_3f35daf57c8a5b2af6cf4b1cb3f23a309dff7fff.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.pdfbox\jempbox\1.8.4\dff1caf2a145958188aebfc111cbcbee5f8b4909\jempbox-1.8.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dff1caf2a145958188aebfc111cbcbee5f8b4909">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\jempbox-1.8.4_5b07d4ca48c4b465c0fe55ad2247a66536e03edc.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.james\apache-mime4j-core\0.7.2\a81264fe0265ebe8fd1d8128aad06dc320de6eef\apache-mime4j-core-0.7.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a81264fe0265ebe8fd1d8128aad06dc320de6eef">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\apache-mime4j-core-0.7.2_d1733fc3d9c724918ac59596ee659435fdc96e0a.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.poi\poi-ooxml\3.10-beta2\d3add814d320629789bd83f359cae1c8b0fa997d\poi-ooxml-3.10-beta2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d3add814d320629789bd83f359cae1c8b0fa997d">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\poi-ooxml-3.10-beta2_58ccedce747cd048b1d7221dcdd96f61cecdb5ff.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-debug-all\4.1\dd6ba5c392d4102458494e29f54f70ac534ec2a2\asm-debug-all-4.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dd6ba5c392d4102458494e29f54f70ac534ec2a2">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\asm-debug-all-4.1_7ea30e6c6cc1ad05ee9fa326f509ab75382ca490.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-compress\1.5\d2bd2c0bd328f1dabdf33e10b6d223ebcbe93343\commons-compress-1.5.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d2bd2c0bd328f1dabdf33e10b6d223ebcbe93343">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\commons-compress-1.5_1eb14e8882699e2c2962b1f6f6aa115947a88832.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.gagravarr\vorbis-java-core\0.1\662a02b94701947e6e66e7793d996043f05fad4a\vorbis-java-core-0.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="662a02b94701947e6e66e7793d996043f05fad4a">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\vorbis-java-core-0.1_ab06c4ff309ecec46b19ff8ed659f3863bf68183.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.tukaani\xz\1.2\bfc66dda280a18ab341b5023248925265c00394c\xz-1.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="bfc66dda280a18ab341b5023248925265c00394c">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\xz-1.2_c6e252a9ec27b61acb7d862a07dcfb2a121f93b6.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcmail-jdk15\1.45\3aed7e642dd8d39dc14ed1dec3ff79e084637148\bcmail-jdk15-1.45.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3aed7e642dd8d39dc14ed1dec3ff79e084637148">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\bcmail-jdk15-1.45_7b1aa0527b2ee00dc3d43d2cc0ec04327fbfdbbe.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\com.googlecode.mp4parser\isoparser\1.1.17\d80bcd7e583d1e1b4904fa0bb0d6d21995a7ca69\isoparser-1.1.17.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d80bcd7e583d1e1b4904fa0bb0d6d21995a7ca69">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\isoparser-1.1.17_c9c86145e7f6117c93d3f0033d19eebf7544256d.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.pdfbox\fontbox\1.8.4\309d407439e059e1df94397968b63018164fe060\fontbox-1.8.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="309d407439e059e1df94397968b63018164fe060">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\fontbox-1.8.4_f5ed9d6ccb1f1d7a8b3180244e43a9a768f8c295.jar" />
+    </item>
+    <item
+        jar="C:\Program Files\Android\Android Studio\gradle\m2repository\com\googlecode\juniversalchardet\juniversalchardet\1.0.3\juniversalchardet-1.0.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="cd49678784c46aa8789c060538e0154013bb421b">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\juniversalchardet-1.0.3_7458143858ece6f05c307dab3dc12038368bf87f.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="cb86970df0f0f25f766d320b279c7858c1ca0003">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-23.2.1_76beeaee80d3b0e416815ab3efca0b316e16087e.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.apache.poi\poi-scratchpad\3.10-beta2\7e0bd38486054edd0de4a673505c4523aca261d7\poi-scratchpad-3.10-beta2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="7e0bd38486054edd0de4a673505c4523aca261d7">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\poi-scratchpad-3.10-beta2_90bf51a09a6397c6efc0601aa9d1739d7c0ef5af.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\exploded-aar\PeerStreaming\peerStreamingCore\unspecified\jars\libs\mp3agic-0.8.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4634ddb223bd7f146077c788ba2315ba27525ffb">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\mp3agic-0.8.4_97c43093ec51cc1251b9298c10b8499d36dd31f1.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="292a9fa091757208efa65e77eef63088247e51f3">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.2.0_a1823af222c4948d0d18f77b15ae258a9a91f1d1.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\uk.org.lidalia\lidalia-slf4j-ext\1.0.0\e8ee79b1cf5523d1c4a81f95b343ed47726b1b27\lidalia-slf4j-ext-1.0.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e8ee79b1cf5523d1c4a81f95b343ed47726b1b27">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\lidalia-slf4j-ext-1.0.0_6d1bf503cb8db0e5c564cf0f38862a6ce4492081.jar" />
+    </item>
+    <item
+        jar="C:\Users\ssiadmin.SSLW-01289\.gradle\caches\modules-2\files-2.1\org.ccil.cowan.tagsoup\tagsoup\1.2.1\5584627487e984c03456266d3f8802eb85a9ce97\tagsoup-1.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5584627487e984c03456266d3f8802eb85a9ce97">
+        <dex dex="C:\Users\ssiadmin.SSLW-01289\Google Drive\PEER\StudioProjects\PeerStreaming\peerStreaming\build\intermediates\pre-dexed\debug\tagsoup-1.2.1_86c23fe58f7297b46230cf2b4e5f6a0eb553cadb.jar" />
+    </item>
+
+</items>

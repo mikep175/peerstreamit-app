@@ -1,7 +1,10 @@
 package map.peer.core;
 
+import java.io.File;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +20,9 @@ import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.AsyncHttpClient.WebSocketConnectCallback;
 import com.koushikdutta.async.http.WebSocket.StringCallback;
 
+import android.content.Context;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.util.Log;
 
 class RequestListener implements Runnable {
@@ -26,17 +32,21 @@ class RequestListener implements Runnable {
 	Map<String, HashMap<String, WorkerThread>> workers = new HashMap<String, HashMap<String, WorkerThread>>();
 	Map<String, String[]> workerRequests = new HashMap<String, String[]>();
 	Map<String, String[]> pendingChallenges = new HashMap<String, String[]>();
+	Map<String, HashMap<String, String[]>> hlsSessions = new HashMap<String, HashMap<String, String[]>>();
+	Map<String, String> hlsSessionsMap = new HashMap<String, String>();
+
 	WebSocket serverSocket;
 	
 	public RequestListener() {
 		
 	}
 	
-	DBHelper dbHelper;
+	DBHelper dbHelper; Context ctx;
 	
-	public RequestListener(DBHelper dbHelper) {
+	public RequestListener(DBHelper dbHelper, Context ctx) {
 		super();
 		this.dbHelper = dbHelper;
+		this.ctx = ctx;
 	}
 
 	boolean isStopped = false;
@@ -65,12 +75,12 @@ class RequestListener implements Runnable {
 				Log.d(TAG,"serverSocket.isOpen()==false");
 				
 				if(workerRequests.size() > 0) {
-					
+
 					String nsi = (String)workerRequests.keySet().toArray()[0];
 					
 					String[] path = workerRequests.remove(nsi);
 					
-					WorkerThread wt = new WorkerThread(path[0], nsi, dbHelper, path[2]);
+					WorkerThread wt = new WorkerThread(path[0], nsi, dbHelper, path[2], (path[3].compareTo("1") == 0), path[4]);
 					
 					String psikey = path[1];
 					
@@ -157,11 +167,12 @@ class RequestListener implements Runnable {
 		                	String nsi = raw[2];
 		                	String origin = raw[3];
 		                	String userAgent = raw[4];
-		                	//check if pw protected
+		                	boolean hls = raw[5].compareTo("1") == 0;
+
 		                	String[] pathAndPass = dbHelper.getPathAndPassword(psiKey);
 		                	
 		                	int concurrentAllowed = Integer.parseInt(pathAndPass[3]);
-		                	
+
 		                	if(workers.containsKey(psiKey) && workers.get(psiKey).size() >= concurrentAllowed) {
 		                		
 		                		serverSocket.send("PSIMAX:" + nsi);
@@ -172,18 +183,38 @@ class RequestListener implements Runnable {
 		                		if(pathAndPass[1] == null || pathAndPass[1].length() == 0) {
 		                			
 		                			dbHelper.insertViewer(origin, userAgent, nsi, psiKey, 1);
-		                			
-		                			workerRequests.put(nsi, new String[] { pathAndPass[0], psiKey, pathAndPass[2] });
+
+									if(hls == true) {
+
+
+										String[] hlsSession = new String[] { pathAndPass[0], psiKey, pathAndPass[2], "1" };
+
+										if(hlsSessions.containsKey(psiKey) == false) {
+
+											hlsSessions.put(psiKey, new HashMap<String, String[]>());
+										}
+
+										hlsSessions.get(psiKey).put(nsi, hlsSession);
+										hlsSessionsMap.put(nsi, psiKey);
+
+										serverSocket.send("PSIHLSINIT:" + nsi + ":" + getVideoLength(Uri.fromFile(new File(pathAndPass[0]))));
+
+									} else {
+
+										workerRequests.put(nsi, new String[] { pathAndPass[0], psiKey, pathAndPass[2], "0", "0" });
+									}
 		                			
 		                		} else {
-		                			String[] temp = new String[6];
+		                			String[] temp = new String[7];
 		                			temp[0] = pathAndPass[0];
 		                			temp[1] = pathAndPass[1];
 		                			temp[2] = psiKey;
 		                			temp[3] = origin;
 		                			temp[4] = userAgent;
 		                			temp[5] = pathAndPass[2];
-		                			
+
+									temp[6] = hls ? "1" : "0";
+
 		                			pendingChallenges.put(nsi, temp);
 		                			serverSocket.send("PSICHALLENGE:" + nsi);
 		                		}
@@ -203,8 +234,28 @@ class RequestListener implements Runnable {
 		                		dbHelper.resetFailedAttempts(pendingChallenges.get(nsi)[2]);
 		                		
 		                		dbHelper.insertViewer(pendingChallenges.get(nsi)[3], pendingChallenges.get(nsi)[4], nsi, pendingChallenges.get(nsi)[2], 1);
-		                		
-		                		workerRequests.put(nsi, new String[] { pendingChallenges.get(nsi)[0], pendingChallenges.get(nsi)[2], pendingChallenges.get(nsi)[5] });
+
+								if(pendingChallenges.get(nsi)[6].equalsIgnoreCase("0") == false) {
+
+									String psiKey = pendingChallenges.get(nsi)[2];
+
+									String[] hlsSession = new String[] { pendingChallenges.get(nsi)[0], pendingChallenges.get(nsi)[2], pendingChallenges.get(nsi)[5], "1"  };
+
+									if(hlsSessions.containsKey(psiKey) == false) {
+
+										hlsSessions.put(psiKey, new HashMap<String, String[]>());
+									}
+
+									hlsSessions.get(psiKey).put(nsi, hlsSession);
+									hlsSessionsMap.put(nsi, psiKey);
+
+									serverSocket.send("PSIHLSINIT:" + nsi + ":" + getVideoLength(Uri.fromFile(new File( pendingChallenges.get(nsi)[0]))));
+
+								} else {
+
+									workerRequests.put(nsi, new String[] { pendingChallenges.get(nsi)[0], pendingChallenges.get(nsi)[2], pendingChallenges.get(nsi)[5], "0", "0"  });
+								}
+
 		                		pendingChallenges.remove(nsi);
 		                	}
 		                	else {
@@ -212,9 +263,81 @@ class RequestListener implements Runnable {
 		                		serverSocket.send("PSIAUTHREJECTED:" + nsi);
 		                	}
 		                }
-		                
-		                	
+
+
+						if(s.indexOf("STREAMHLS:") == 0) {
+
+							String[] raw = s.split(":");
+
+							String nsi = raw[1];
+							String loc = raw[2];
+
+
+							if(hlsSessionsMap.containsKey(nsi) == true) {
+
+								String psiKey = hlsSessionsMap.get(nsi);
+
+								if(hlsSessions.containsKey(psiKey) == true) {
+
+									if(hlsSessions.get(psiKey).containsKey(nsi) == true) {
+
+										String[] vars = hlsSessions.get(psiKey).get(nsi);
+
+										String[] wr = new String[5];
+
+										wr[0] = vars[0];
+										wr[1] = vars[1];
+										wr[2] = vars[2];
+										wr[3] = "1";
+										wr[4] = loc;
+
+										workerRequests.put(nsi, wr);
+									}
+
+								}
+
+							}
+
+
+						}
+
+						if(s.indexOf("INITHLS:") == 0) {
+
+							String[] raw = s.split(":");
+
+							String nsi = raw[1];
+
+
+							if(hlsSessionsMap.containsKey(nsi) == true) {
+
+								String psiKey = hlsSessionsMap.get(nsi);
+
+								if(hlsSessions.containsKey(psiKey) == true) {
+
+									if(hlsSessions.get(psiKey).containsKey(nsi) == true) {
+
+										String[] vars = hlsSessions.get(psiKey).get(nsi);
+
+										String[] wr = new String[5];
+
+										wr[0] = vars[0];
+										wr[1] = vars[1];
+										wr[2] = vars[2];
+										wr[3] = "1";
+										wr[4] = "-1";
+
+										workerRequests.put(nsi, wr);
+									}
+
+								}
+
+							}
+
+
+						}
 		            }
+
+
 		        });
 		        webSocket.setDataCallback(new DataCallback() {
 		            public void onDataAvailable(DataEmitter emitter, ByteBufferList byteBufferList) {
@@ -260,7 +383,13 @@ class RequestListener implements Runnable {
 
 			serverSocket.send("PSIREMOVESERVKEY:" + psiKey);
 		}
-		
+
+		if(hlsSessions.containsKey(psiKey)) {
+
+			hlsSessions.remove(psiKey);
+
+		}
+
 		if(workers.containsKey(psiKey)) {
 			
 			HashMap<String, WorkerThread> wts = workers.get(psiKey);
@@ -277,7 +406,15 @@ class RequestListener implements Runnable {
 	}
 	
 	
-		
+	public String getVideoLength(Uri path) {
+		MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//use one of overloaded setDataSource() functions to set your data source
+		retriever.setDataSource(ctx, path);
+		String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+		long timeInMillisec = Long.parseLong(time );
+
+		return Long.toString(timeInMillisec / 1000);
+	}
 		
 		
 	}
